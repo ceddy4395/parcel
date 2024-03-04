@@ -4,6 +4,8 @@
 name: dev-release
 
 on:
+  push:
+    branches: [molejniczak/m1-actions]
   workflow_dispatch:
 
 jobs:
