@@ -1,11 +1,11 @@
+/* eslint-disable no-console */
+
 import {execSync} from 'node:child_process';
 import {readFile} from 'node:fs/promises';
 import {URL} from 'node:url';
 import {promisify} from 'node:util';
 
 import program from 'commander';
-
-let exec = promisify(execSync);
 
 async function main(tag) {
   let publishSummary = JSON.parse(
@@ -15,13 +15,11 @@ async function main(tag) {
     ),
   );
 
-  await Promise.all(
-    publishSummary.map(({packageName, version}) => {
-      exec(`npm dist-tag add ${packageName}@${version} ${tag}`, {
-        encoding: 'utf8',
-      });
-    }),
-  );
+  for (let {packageName, version} of publishSummary) {
+    execSync(`npm dist-tag add ${packageName}@${version} ${tag}`, {
+      encoding: 'utf8',
+    });
+  }
 }
 
 let { tag } = program
@@ -29,9 +27,11 @@ let { tag } = program
   .option('--tag <tag>', 'The npm tag to add to every package published in the latest release')
   .parse(process.argv);
 
-
 if (!tag) {
   throw new Error('Required option `tag` not specified');
 }
 
-main(tag);
+main(tag)
+  .then(() => {
+    console.log(`Successfully added @${tag} to released packages`);
+  });
