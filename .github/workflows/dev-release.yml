@@ -4,6 +4,8 @@
 name: dev-release
 
 on:
+  push:
+    branches: molejniczak/test-tags
   workflow_dispatch:
 
 jobs:
@@ -12,4 +14,8 @@ jobs:
     uses: ./.github/workflows/release.yml
     secrets: inherit
     with:
-      release-command: yarn dev:release
+      release-command: |
+        yarn dev:release --summary-file
+        yarn lerna changed
+        yarn lerna list --no-private
+        node scripts/tag-release.mjs --tag dev-test
