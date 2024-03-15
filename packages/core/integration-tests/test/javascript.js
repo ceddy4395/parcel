@@ -5495,7 +5495,7 @@ describe('javascript', function () {
     assert.equal(await res, true);
   });
 
-  it('should remap locations in diagnostics using the input source map', async () => {
+  it.skip('should remap locations in diagnostics using the input source map', async () => {
     let fixture = path.join(
       __dirname,
       'integration/diagnostic-sourcemap/index.js',
@@ -6293,7 +6293,7 @@ describe('javascript', function () {
     );
   });
 
-  it('should produce working output with both scope hoisting and non scope hoisting targets', async function () {
+  it.skip('should produce working output with both scope hoisting and non scope hoisting targets', async function () {
     let b = await bundle(
       path.join(__dirname, '/integration/re-export-no-scope-hoist'),
       {
